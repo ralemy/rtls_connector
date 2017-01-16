@@ -5,6 +5,8 @@ https://blogs.msdn.microsoft.com/softwaresimian/2014/10/04/a-windows-service-hyb
 Read Settings from an XML file
 https://support.microsoft.com/en-us/kb/815786
 
+Accessing VMWare shared folders from administrator command line
+http://superuser.com/questions/1072269/vmware-shared-folder-inaccessible-with-administrator-account
 
 Create an installer for the service
 
