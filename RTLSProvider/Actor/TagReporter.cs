@@ -19,16 +19,27 @@ namespace RTLSProvider.Actor
 
         public TagReporter(IRabbitQueue outputQueue)
         {
+            ActorSelection broker = Context.ActorSelection("/user/TagBroker");
+
             Receive<RtlsMessage>(message =>
             {
                 _currentTags[message.Epc] = message;
                 outputQueue.Publish(outputQueue.PublishQueueName(), JsonConvert.SerializeObject(message));
             });
-            Receive<ReportRequest>(message =>
+            Receive<ReportRequest>(
+                message =>
+                {
+                    Sender.Tell(
+                        JsonConvert.SerializeObject(_currentTags.ToList().ConvertAll<RtlsMessage>(p => p.Value)), Self);
+                });
+            Receive<DiscardRequest>(message =>
             {
-                if (message.Command == ReportRequest.GetItems)
-                    Sender.Tell(JsonConvert.SerializeObject(_currentTags.ToList().ConvertAll<RtlsMessage>(p => p.Value)),Self);
-
+                message.DiscardedTags.ForEach(tag =>
+                {
+                    if (_currentTags.ContainsKey(tag)) _currentTags.Remove(tag);
+                });
+                Sender.Tell("Tags Discarded", Self);
+                broker.Tell(message,ActorRefs.NoSender);
             });
         }
 

@@ -8,8 +8,11 @@ namespace RTLSProvider.Actor
 {
     class ReportRequest
     {
-        public static readonly string GetItems = "getItems";
-        public String Command = "";
-        public Dictionary<string,string> Arguments = new Dictionary<string, string>();
+        public Dictionary<string, string> Arguments = new Dictionary<string, string>();
+    }
+
+    class DiscardRequest
+    {
+        public List<string> DiscardedTags = new List<string>();
     }
 }

@@ -92,7 +92,7 @@ namespace RTLSProvider.Rest
                 while (true)
                     Process(_listener.GetContext());
             }
-            catch (ThreadAbortException e)
+            catch (ThreadAbortException)
             {
                 _logger.WriteEntry("Web Server Stopping", EventLogEntryType.Information,
                     ConnectorService.HttpServerLogId,
@@ -118,20 +118,38 @@ namespace RTLSProvider.Rest
         private void ServeApi(HttpListenerContext c, string path)
         {
             if (path.StartsWith("/rtls/config"))
-                ConfigCrud(c, path);
+                ConfigCrud(c);
             else if (path.StartsWith("/rtls/items"))
                 ServeFile(c, GetItems(c));
+            else if (path.StartsWith("/rtls/discard"))
+                ServeFile(c, DiscardItems(c));
             else ServeFile(c, path);
+        }
+
+        private string DiscardItems(HttpListenerContext c)
+        {
+            if (c.Request.HttpMethod != HttpMethod.Post.Method) return "Bad Method. Use Post";
+            var payload = GetRequestPayload(c);
+            try
+            {
+                _inbox.Send(_system.Reporter(), new DiscardRequest()
+                {
+                    DiscardedTags = JsonConvert.DeserializeObject<List<string>>(payload)
+                });
+                _inbox.Receive(TimeSpan.FromSeconds(10));
+                return "Tags Discarded";
+            }
+            catch (TimeoutException)
+            {
+                return "Operation Timed out";
+            }
         }
 
         private string GetItems(HttpListenerContext c)
         {
             try
             {
-                _inbox.Send(_system.Reporter(), new ReportRequest()
-                {
-                    Command = ReportRequest.GetItems
-                });
+                _inbox.Send(_system.Reporter(), new ReportRequest());
                 return (string) _inbox.Receive(TimeSpan.FromSeconds(10));
             }
             catch (TimeoutException)
@@ -140,23 +158,26 @@ namespace RTLSProvider.Rest
             }
         }
 
-        private void ConfigCrud(HttpListenerContext c, string path)
+        private void ConfigCrud(HttpListenerContext c)
         {
             if (c.Request.HttpMethod == HttpMethod.Get.Method)
                 ServeFile(c, DumpConfiguration());
             else if (c.Request.HttpMethod == HttpMethod.Post.Method)
-                SaveConfig(c);
+            {
+                var payload = JsonConvert.DeserializeObject<Dictionary<string, string>>(GetRequestPayload(c));
+                ServeFile(c, UpdateConfig(payload));
+            }
         }
 
-        private void SaveConfig(HttpListenerContext c)
+        private string GetRequestPayload(HttpListenerContext c)
         {
             if (c.Request.HasEntityBody)
                 using (var body = c.Request.InputStream)
                 using (var reader = new StreamReader(body, c.Request.ContentEncoding))
                 {
-                    var payload = JsonConvert.DeserializeObject<Dictionary<string, string>>(reader.ReadToEnd());
-                    ServeFile(c, UpdateConfig(payload));
+                    return reader.ReadToEnd();
                 }
+            return "";
         }
 
         private string UpdateConfig(Dictionary<string, string> payload)

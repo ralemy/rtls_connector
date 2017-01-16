@@ -21,6 +21,11 @@ namespace RTLSProvider.Actor
 
             Receive<AmqpMessage>(processor);
             Receive<List<ImpinjItem>>(message => message.ForEach(m => processor(m)));
+            Receive<DiscardRequest>(message => message.DiscardedTags.ForEach(tag =>
+            {
+                if(_tagProcessors.ContainsKey(tag))
+                    _tagProcessors[tag].Tell(PoisonPill.Instance,ActorRefs.NoSender);
+            }));
         }
 
 
