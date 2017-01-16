@@ -1,0 +1,45 @@
+﻿Uninstalling assembly 'Z:\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\bin\Debug\RTLSProvider.exe'.
+Affected parameters are:
+   u = 
+   logfile = Z:\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\bin\Debug\RTLSProvider.InstallLog
+   assemblypath = Z:\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\bin\Debug\RTLSProvider.exe
+Removing EventLog source impinj_rtls_connector.
+Service impinj_rtls_connector is being removed from the system...
+Service impinj_rtls_connector was successfully removed from the system.
+Attempt to stop service impinj_rtls_connector.
+Uninstalling assembly 'Z:\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\bin\Debug\RTLSProvider.exe'.
+Affected parameters are:
+   u = 
+   logfile = Z:\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\bin\Debug\RTLSProvider.InstallLog
+   assemblypath = Z:\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\bin\Debug\RTLSProvider.exe
+Removing EventLog source impinj_rtls_connector.
+Service impinj_rtls_connector is being removed from the system...
+Service impinj_rtls_connector was successfully removed from the system.
+Uninstalling assembly 'Z:\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\bin\Debug\RTLSProvider.exe'.
+Affected parameters are:
+   u = 
+   logfile = Z:\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\bin\Debug\RTLSProvider.InstallLog
+   assemblypath = Z:\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\bin\Debug\RTLSProvider.exe
+Removing EventLog source impinj_rtls_connector.
+Service impinj_rtls_connector is being removed from the system...
+Service impinj_rtls_connector was successfully removed from the system.
+Attempt to stop service impinj_rtls_connector.
+Installing assembly 'Z:\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\bin\Debug\RTLSProvider.exe'.
+Affected parameters are:
+   i = 
+   logfile = Z:\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\bin\Debug\RTLSProvider.InstallLog
+   assemblypath = Z:\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\bin\Debug\RTLSProvider.exe
+Installing service impinj_rtls_connector...
+Creating EventLog source impinj_rtls_connector in log Application...
+An exception occurred in the OnAfterInstall event handler of RTLSProvider.ConnectorInstaller.
+System.InvalidOperationException: Cannot start service impinj_rtls_connector on computer '.'.
+The inner exception System.ComponentModel.Win32Exception was thrown with the following error message: The service cannot be started, either because it is disabled or because it has no enabled devices associated with it.
+See the contents of the log file for the Z:\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\bin\Debug\RTLSProvider.exe assembly's progress.
+The file is located at Z:\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\bin\Debug\RTLSProvider.InstallLog.
+Rolling back assembly 'Z:\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\bin\Debug\RTLSProvider.exe'.
+Affected parameters are:
+   i = 
+   logfile = Z:\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\bin\Debug\RTLSProvider.InstallLog
+   assemblypath = Z:\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\bin\Debug\RTLSProvider.exe
+   logtoconsole = 
+Restoring event log to previous state for source impinj_rtls_connector.

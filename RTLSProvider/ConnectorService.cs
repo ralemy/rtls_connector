@@ -36,7 +36,7 @@ namespace RTLSProvider
         public void Startup()
         {
             var appSettings = ConfigurationManager.AppSettings;
-            _eventLog.WriteEntry("Starting Connector:" + appSettings.Get("ItemSenseUrl") , EventLogEntryType.Information,1,1);
+            _eventLog.WriteEntry("Starting Connector:" + appSettings.Get("ConfigurationPort") , EventLogEntryType.Information,1,1);
             Run(appSettings);
 
         }
@@ -55,7 +55,8 @@ namespace RTLSProvider
             var factory = mQueue.CreateFactory(new QueueFactoryParams()
             {
                 UserName = appSettings.Get("TargetUser"),
-                Password = appSettings.Get("TargetPassword")
+                Password = appSettings.Get("TargetPassword"),
+                MessageTtl = appSettings.Get("MessageTTL")
             });
             mQueue.Initialize(factory);
             mQueue.Declare(appSettings.Get("TargetQueue"));

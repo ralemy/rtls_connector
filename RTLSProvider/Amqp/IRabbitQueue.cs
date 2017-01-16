@@ -20,7 +20,7 @@ namespace RTLSProvider.Amqp
         String PublishQueueName();
     }
 
-    public class QueueFactoryParams
+    public class QueueFactoryParams //ToDo: review to move to configuration
     {
         public String HostName = "localhost";
         public Int32 Port = 5672;
