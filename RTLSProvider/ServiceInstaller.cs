@@ -13,22 +13,30 @@ using System.Xml;
 namespace RTLSProvider
 {
     [RunInstaller(true)]
-    public sealed class ConnectorInstaller : ServiceInstaller   {
-        private readonly EventLog _logger = new EventLog("Application",".","impinj_rtls_connector");
+    public partial class ServiceInstaller : System.ServiceProcess.ServiceInstaller
+    {
+        private readonly EventLog _logger = new EventLog("Application", ".", "impinj_rtls_connector");
 
-        public ConnectorInstaller()
+        public ServiceInstaller()
         {
             this.Description = "Connector Service to send RAIN RFID data from Impinj platfrorm to an AMQP broker";
             this.DisplayName = "Impinj RTLS connector ";
             this.ServiceName = "impinj_rtls_connector";
             this.StartType = ServiceStartMode.Automatic;
+            InitializeComponent();
+        }
+
+        public override void Uninstall(IDictionary savedState)
+        {
+            _logger.WriteEntry("Uninstalling RTLS Connector Services", EventLogEntryType.Information, 10, 2);
+            base.Uninstall(savedState);
         }
 
         public override void Install(IDictionary stateSaver)
         {
             base.Install(stateSaver);
 
-            _logger.WriteEntry("Installing Connector Services", EventLogEntryType.Information, 10, 2);
+            _logger.WriteEntry("Installing RTLS Connector Services", EventLogEntryType.Information, 10, 2);
 
             var propertyDictionary = CreatePropertyDictionary(getPropertyKeys(), Context.Parameters);
 
@@ -100,23 +108,23 @@ namespace RTLSProvider
             return appConfigPath;
         }
 
-        protected override void OnAfterInstall(IDictionary savedState)
-        {
-            base.OnAfterInstall(savedState);
-            using (var sc = new ServiceController(this.ServiceName))
-            {
-                sc.Start();
-            }
-        }
+//        protected override void OnAfterInstall(IDictionary savedState)
+//        {
+//            base.OnAfterInstall(savedState);
+//            using (var sc = new ServiceController(this.ServiceName))
+//            {
+//                sc.Start();
+//            }
+//        }
     }
-
     [RunInstaller(true)]
-    public sealed class ConnectorProccessInstaller : ServiceProcessInstaller
+    public sealed class ServiceProccessInstaller : ServiceProcessInstaller
     {
-        public ConnectorProccessInstaller()
+        public ServiceProccessInstaller()
         {
             this.Account = ServiceAccount.LocalSystem;
         }
 
     }
+
 }

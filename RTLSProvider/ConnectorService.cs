@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using RTLSProvider.Actor;
 using RTLSProvider.Amqp;
 using RTLSProvider.ItemSense;
+using RTLSProvider.Rest;
 
 namespace RTLSProvider
 {
@@ -20,6 +21,9 @@ namespace RTLSProvider
         private readonly EventLog _eventLog;
         private ConnectorActors _actorSystem;
         private ItemSenseProxy _itemSense;
+        public static short ProcessError = 10;
+        public static int HttpServerLogId = 100;
+        private HttpServer _server;
 
         public ConnectorService()
         {
@@ -37,16 +41,22 @@ namespace RTLSProvider
         {
             var appSettings = ConfigurationManager.AppSettings;
             _eventLog.WriteEntry("Starting Connector:" + appSettings.Get("ConfigurationPort") , EventLogEntryType.Information,1,1);
-            Run(appSettings);
+            _server = new HttpServer(appSettings, this, _eventLog);
+            _server.Start();
+            if(appSettings.Get("ItemSenseUrl").Length > 0)
+                Run(appSettings);
+            else
+                _eventLog.WriteEntry("First Run, No ItemSense", EventLogEntryType.Information, 1, 1);
 
         }
 
         public void Run(NameValueCollection appSettings)
         {
+            _eventLog.WriteEntry("Running against ItemSense:" + appSettings.Get("ItemSenseUrl"), EventLogEntryType.Information, 1, 1);
             _actorSystem = new ConnectorActors("ImpinjRTLS", appSettings, _eventLog, CreateOutputQueue(appSettings));
             _itemSense = new ItemSenseProxy(appSettings, new RabbitQueue());
             _itemSense.ConsumeQueue(new AmqpRegistrationParams(), _actorSystem.ProcessAmqp());
-
+            _server.SetActorSystem(_actorSystem);
         }
 
         private static IRabbitQueue CreateOutputQueue(NameValueCollection appSettings)
@@ -73,7 +83,7 @@ namespace RTLSProvider
            _eventLog.WriteEntry("Stopping Connector",EventLogEntryType.Information,1,1);
             _itemSense?.ReleaseQueue();
             _actorSystem?.Terminate();
-
+            _server?.Stop();
         }
     }
 }

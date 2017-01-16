@@ -11,6 +11,9 @@ http://superuser.com/questions/1072269/vmware-shared-folder-inaccessible-with-ad
 Akka System for .Net
 http://getakka.net/docs/Getting%20started
 
+Akka Wire Serialization
+https://www.nuget.org/packages/Akka.Serialization.Wire/
+
 
 Create an installer for the service
 

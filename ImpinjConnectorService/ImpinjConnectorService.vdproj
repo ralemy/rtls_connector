@@ -261,6 +261,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_8984F3A0AA32B9AE896F8D665609DE83"
+        "OwnerKey" = "8:_A1A3824C12D04403A0CA179393992A32"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_8FEFEB2B5E7752820CF52504FF26AAFD"
         "OwnerKey" = "8:_A1A3824C12D04403A0CA179393992A32"
         "MsmSig" = "8:_UNDEFINED"
@@ -274,6 +280,18 @@
         "Entry"
         {
         "MsmKey" = "8:_98ED34457431163470855C2D89151718"
+        "OwnerKey" = "8:_A1A3824C12D04403A0CA179393992A32"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9A06CC2D5D5AD3C963D0B27E8C6C17F0"
+        "OwnerKey" = "8:_C64AF3C46FE7E3A32E9185C05B67F1BA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9A06CC2D5D5AD3C963D0B27E8C6C17F0"
         "OwnerKey" = "8:_A1A3824C12D04403A0CA179393992A32"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -351,6 +369,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_C64AF3C46FE7E3A32E9185C05B67F1BA"
+        "OwnerKey" = "8:_A1A3824C12D04403A0CA179393992A32"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_C7419D3752C44DC636AFD1C8325E7076"
         "OwnerKey" = "8:_A1A3824C12D04403A0CA179393992A32"
         "MsmSig" = "8:_UNDEFINED"
@@ -383,6 +407,12 @@
         {
         "MsmKey" = "8:_D810CE28512484730B11EAEB0F9C0F62"
         "OwnerKey" = "8:_A1A3824C12D04403A0CA179393992A32"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D810CE28512484730B11EAEB0F9C0F62"
+        "OwnerKey" = "8:_8984F3A0AA32B9AE896F8D665609DE83"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -430,13 +460,25 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A379025919311F77B125927A24EA4009"
+        "OwnerKey" = "8:_06DFFC3AC77202DB07120A82E5CD2594"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_06DFFC3AC77202DB07120A82E5CD2594"
+        "OwnerKey" = "8:_9A06CC2D5D5AD3C963D0B27E8C6C17F0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_C64AF3C46FE7E3A32E9185C05B67F1BA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_8984F3A0AA32B9AE896F8D665609DE83"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -769,6 +811,12 @@
         "OwnerKey" = "8:_644FA34741EE58A92209728EC334282C"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_A379025919311F77B125927A24EA4009"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -787,6 +835,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.5"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.5 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.5"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -803,6 +867,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.5"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.5 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.5"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -838,7 +918,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:.NETFramework,Version=v4.5"
+                "FrameworkVersion" = "8:.NETFramework,Version=v4.5.2"
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=395269"
                 }
@@ -1900,6 +1980,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8984F3A0AA32B9AE896F8D665609DE83"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Akka.Hocon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_8984F3A0AA32B9AE896F8D665609DE83"
+                    {
+                    "Name" = "8:Akka.Hocon.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Akka.Hocon.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_8AF6591B3F9A4559B0AABE088177E6FC"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8FEFEB2B5E7752820CF52504FF26AAFD"
             {
             "AssemblyRegister" = "3:1"
@@ -1976,6 +2087,37 @@
                     }
                 }
             "SourcePath" = "8:System.ObjectModel.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_8AF6591B3F9A4559B0AABE088177E6FC"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9A06CC2D5D5AD3C963D0B27E8C6C17F0"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Wire, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_9A06CC2D5D5AD3C963D0B27E8C6C17F0"
+                    {
+                    "Name" = "8:Wire.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Wire.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_8AF6591B3F9A4559B0AABE088177E6FC"
@@ -2255,6 +2397,37 @@
                     }
                 }
             "SourcePath" = "8:System.Threading.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_8AF6591B3F9A4559B0AABE088177E6FC"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C64AF3C46FE7E3A32E9185C05B67F1BA"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Akka.Serialization.Wire, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_C64AF3C46FE7E3A32E9185C05B67F1BA"
+                    {
+                    "Name" = "8:Akka.Serialization.Wire.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Akka.Serialization.Wire.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_8AF6591B3F9A4559B0AABE088177E6FC"
@@ -2670,7 +2843,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ImpinjConnectorService"
         "ProductCode" = "8:{7CFDD901-9AFE-4B1D-9C41-FC254331FBA3}"
-        "PackageCode" = "8:{2EB6B11B-FBFA-4CD1-8572-7E5D0F21EB07}"
+        "PackageCode" = "8:{12DF0F74-8F83-4AE9-98D4-6E914929397D}"
         "UpgradeCode" = "8:{279E66C0-6E89-450E-8F22-49B533882B53}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -2995,9 +3168,9 @@
             "Attributes" = "3:1"
                 "Dialogs"
                 {
-                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_6B3B506DCB994A4A9B041EEFB1469DB4"
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_5663CF9C439E43C18ED4BEE68CC25191"
                     {
-                    "Sequence" = "3:210"
+                    "Sequence" = "3:110"
                     "DisplayName" = "8:Textboxes   (A)"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"

@@ -5,4 +5,3 @@
 \\vmware-host\Shared Folders\Documents\Visual Studio 2015\Projects\RTLSProvider\SampleClient\bin\Debug\RabbitMQ.Client.xml
 \\vmware-host\Shared Folders\Documents\Visual Studio 2015\Projects\RTLSProvider\SampleClient\obj\Debug\SampleClient.exe
 \\vmware-host\Shared Folders\Documents\Visual Studio 2015\Projects\RTLSProvider\SampleClient\obj\Debug\SampleClient.pdb
-\\vmware-host\shared folders\documents\visual studio 2015\Projects\RTLSProvider\SampleClient\obj\Debug\SampleClient.csprojResolveAssemblyReference.cache

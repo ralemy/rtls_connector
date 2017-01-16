@@ -21,13 +21,14 @@ namespace RTLSProvider.Actor
         {
             Receive<RtlsMessage>(message =>
             {
-                _currentTags.Add(message.Epc, message);
+                _currentTags[message.Epc] = message;
                 outputQueue.Publish(outputQueue.PublishQueueName(), JsonConvert.SerializeObject(message));
             });
-            Receive<String>(message =>
+            Receive<ReportRequest>(message =>
             {
-                if (message.Equals("getItems"))
-                    Sender.Tell(_currentTags.ToList().ConvertAll<RtlsMessage>(p => p.Value),Self);
+                if (message.Command == ReportRequest.GetItems)
+                    Sender.Tell(JsonConvert.SerializeObject(_currentTags.ToList().ConvertAll<RtlsMessage>(p => p.Value)),Self);
+
             });
         }
 
