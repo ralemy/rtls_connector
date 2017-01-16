@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -48,7 +50,7 @@ namespace RTLSProvider.ItemSense
         public string FromZone { get; set; }
         [JsonProperty("toZone", NullValueHandling = NullValueHandling.Ignore)]
         public string ToZone { get; set; }
-        [JsonProperty("zoneTransitionsOnly", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("zoneTransitionsOnly", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public Boolean ZoneTransitionsOnly { get; set; }
     }
 
@@ -65,6 +67,9 @@ namespace RTLSProvider.ItemSense
     {
         string Epc { get; set; }
         string Zone { get; set; }
+        DateTime TimeStamp { get; set; }
+        string X { get; set; }
+        string Y { get; set; }
     }
 
     public class AmqpMessage : ITargetReportable
@@ -73,8 +78,68 @@ namespace RTLSProvider.ItemSense
         public string Epc { get; set; }
         [JsonProperty("toZone")]
         public string Zone { get; set; }
+        [JsonProperty("observationTime")]
+        public DateTime TimeStamp { get; set; }
+        [JsonProperty("toX")]
+        public string X { get; set; }
+        [JsonProperty("toY")]
+        public string Y { get; set; }
     }
 
+    public class RtlsMessage
+    {
+        [JsonProperty("epc")]
+        public string Epc { get; set; }
+        [JsonProperty("zone")]
+        public string Zone { get; set; }
+        [JsonProperty("timestamp")]
+        public DateTime TimeStamp { get; set; }
+        [JsonProperty("x")]
+        public float X { get; set; }
+        [JsonProperty("y")]
+        public float Y { get; set; }
+
+        [JsonIgnore] public string ItemSenseZone ="";
+        [JsonIgnore] private readonly Regex _regex = new Regex(@"(.+)_([.\d]+)_([.\d]+)$");
+
+        public RtlsMessage()
+        {
+            
+        }
+        public RtlsMessage(ITargetReportable message)
+        {
+            Epc = message.Epc;
+            TimeStamp = message.TimeStamp;
+            ItemSenseZone = message.Zone;
+            if(message.X != null)
+                ConvertFromLocationMessage(message);
+            else
+                ConvertFromInventoryMessage(message);
+        }
+        private void ConvertFromLocationMessage(ITargetReportable message)
+        {
+            Zone = message.Zone;
+            X = float.Parse(message.X);
+            Y = float.Parse(message.Y);
+        }
+
+        private void ConvertFromInventoryMessage(ITargetReportable message)
+        {
+            var m = _regex.Match(message.Zone);
+            if (m.Success)
+            {
+                Zone = m.Groups[1].ToString();
+                X = float.Parse(m.Groups[2].ToString());
+                Y = float.Parse(m.Groups[3].ToString());
+            }
+            else
+            {
+                Zone = message.Zone;
+                X = 0;
+                Y = 0;
+            }
+        }
+    }
 
     //GET Items
     public class ImpinjItem : ITargetReportable
@@ -84,7 +149,11 @@ namespace RTLSProvider.ItemSense
         [JsonProperty("zone")]
         public string Zone { get; set; }
         [JsonProperty("lastModifiedTime")]
-        public DateTime Time;
+        public DateTime TimeStamp { get; set; }
+        [JsonProperty("xLocation")]
+        public string X { get; set; }
+        [JsonProperty("yLocation")]
+        public string Y { get; set; }
     }
     public class ItemsObject
     {

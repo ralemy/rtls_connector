@@ -8,6 +8,10 @@ https://support.microsoft.com/en-us/kb/815786
 Accessing VMWare shared folders from administrator command line
 http://superuser.com/questions/1072269/vmware-shared-folder-inaccessible-with-administrator-account
 
+Akka System for .Net
+http://getakka.net/docs/Getting%20started
+
+
 Create an installer for the service
 
 http://stackoverflow.com/questions/22938128/vs2013-windows-service-how-to-make-installer

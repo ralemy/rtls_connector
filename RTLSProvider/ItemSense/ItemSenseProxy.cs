@@ -97,8 +97,7 @@ namespace RTLSProvider.ItemSense
                 UserName = _user,
                 Password = _password
             };
-
-            _rabbitQueue.Initialize(_rabbitQueue.CreateFactoy(factoryParams));
+            _rabbitQueue.Initialize(_rabbitQueue.CreateFactory(factoryParams));
             _rabbitQueue.AddReceiver((model, e) =>
             {
                 var message = JsonConvert.DeserializeObject<AmqpMessage>(Encoding.UTF8.GetString(e.Body));

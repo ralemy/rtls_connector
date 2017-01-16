@@ -5,8 +5,11 @@ using System.Configuration.Install;
 using System.Linq;
 using System.ServiceProcess;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
+using RTLSProvider.ItemSense;
 
 namespace RTLSProvider
 {
@@ -37,10 +40,15 @@ namespace RTLSProvider
                         case "-console":
                             console = true;
                             break;
-//                        case "-t":
-//                            var x = new AmqpRegistrationParams();
-//                            Console.WriteLine(JsonConvert.SerializeObject(x));
-//                            return 0;
+                        case "-t":
+                            var x = new RtlsMessage()
+                            {
+                                Epc = "234556",
+                                TimeStamp = DateTime.Now.ToUniversalTime(),
+                                ItemSenseZone = "zomeeererer"
+                            };
+                            Console.WriteLine(JsonConvert.SerializeObject(x));
+                            return 0;
                         default:
                             Console.Error.WriteLine
                                 ("Argument not expected: " + arg);

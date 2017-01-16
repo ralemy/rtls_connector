@@ -11,11 +11,13 @@ namespace RTLSProvider.Amqp
 {
     public interface IRabbitQueue
     {
-        ConnectionFactory CreateFactoy(QueueFactoryParams factoryParams);
+        ConnectionFactory CreateFactory(QueueFactoryParams factoryParams);
         void Initialize(ConnectionFactory factory);
         void AddReceiver(EventHandler<BasicDeliverEventArgs> receiver);
         void Consume(String queue);
         void ReleaseQueue();
+        void Publish(String queueName , String messsage);
+        String PublishQueueName();
     }
 
     public class QueueFactoryParams
@@ -30,5 +32,6 @@ namespace RTLSProvider.Amqp
         public Boolean QueueDurable = false;
         public Boolean QueueExclusive = false;
         public Boolean AutoDelete = false;
+        public string MessageTtl = "60000";
     }
 }

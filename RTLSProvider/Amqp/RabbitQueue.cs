@@ -1,23 +1,19 @@
 ﻿using System;
 using System.Text;
+using Akka.Actor;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace RTLSProvider.Amqp
 {
-    public class RabbitQueue
+    public class RabbitQueue : IRabbitQueue
     {
         private IConnection _connection;
         private IModel _channel;
         private EventingBasicConsumer _consumer;
         private QueueFactoryParams _factoryParams;
+        private string _publishQueueName;
 
-        public void Initialize(ConnectionFactory connectionFactory)
-        {
-            if (connectionFactory != null) _connection = connectionFactory.CreateConnection();
-            if (_connection != null) _channel = _connection.CreateModel();
-            if (_channel != null) _consumer = new EventingBasicConsumer(_channel);
-        }
 
         public ConnectionFactory CreateFactory(QueueFactoryParams factoryParams)
         {
@@ -33,6 +29,14 @@ namespace RTLSProvider.Amqp
             };
         }
 
+        public void Initialize(ConnectionFactory connectionFactory)
+        {
+            if (connectionFactory != null) _connection = connectionFactory.CreateConnection();
+            if (_connection != null) _channel = _connection.CreateModel();
+            if (_channel != null) _consumer = new EventingBasicConsumer(_channel);
+        }
+
+        // Receive
         public void AddReceiver(EventHandler<BasicDeliverEventArgs> action)
         {
             _consumer.Received += action;
@@ -45,18 +49,29 @@ namespace RTLSProvider.Amqp
                 consumer: _consumer);
         }
 
+        //Publish
         public void Declare(string queue)
         {
             if (_factoryParams != null)
+            {
                 _channel.QueueDeclare(queue: queue, durable: _factoryParams.QueueDurable,
                     exclusive: _factoryParams.QueueExclusive,
                     autoDelete: _factoryParams.AutoDelete, arguments: null);
+                _publishQueueName = queue;
+            }
+        }
+
+        public string PublishQueueName()
+        {
+            return _publishQueueName;
         }
 
         public void Publish(string queue, string message)
         {
             var body = Encoding.UTF8.GetBytes(message);
-            _channel.BasicPublish(exchange: "", routingKey: queue, basicProperties: null, body: body);
+            var prop = _channel.CreateBasicProperties(); //ToDo: research the prop.contentType property
+            prop.Expiration = _factoryParams.MessageTtl;
+            _channel.BasicPublish(exchange: "", routingKey: queue, basicProperties: prop, body: body);
         }
 
         public void ReleaseQueue()
