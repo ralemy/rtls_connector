@@ -41,6 +41,7 @@ namespace RTLSProvider
         {
             var appSettings = ConfigurationManager.AppSettings;
             _eventLog.WriteEntry("Starting Connector:" + appSettings.Get("ConfigurationPort") , EventLogEntryType.Information,1,1);
+            RtlsMessage.RtlsInvertY = appSettings.Get("RTLSInvertY").ToLower() == "true";
             _server = new HttpServer(appSettings, this, _eventLog);
             _server.Start();
             if(appSettings.Get("ItemSenseUrl").Length > 0)
@@ -73,7 +74,7 @@ namespace RTLSProvider
             return mQueue;
         }
 
-        protected override void OnStop()
+        protected override void OnShutdown()
         {
             Shutdown();
         }

@@ -96,6 +96,7 @@
     <Compile Include="ItemSense\ItemSenseProxy.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rest\ApiServer.cs" />
     <Compile Include="Rest\HttpServer.cs" />
     <Compile Include="ServiceInstaller.cs">
       <SubType>Component</SubType>

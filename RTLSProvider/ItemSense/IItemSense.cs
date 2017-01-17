@@ -9,5 +9,6 @@ namespace RTLSProvider.ItemSense
     public interface IItemSense
     {
         void ConsumeQueue(AmqpRegistrationParams queueParams, Action<AmqpMessage> reporter);
+        void ReleaseQueue();
     }
 }

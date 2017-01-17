@@ -58,6 +58,7 @@ namespace RTLSProvider.Rest
         private readonly EventLog _logger;
         private ConnectorActors _system;
         private Inbox _inbox;
+        private ApiServer _apiServer;
 
         public HttpServer(NameValueCollection appSettings, ConnectorService connectorService, EventLog eventLog)
         {
@@ -67,6 +68,7 @@ namespace RTLSProvider.Rest
             _port = int.Parse(appSettings["ConfigurationPort"]);
             _connectorService = connectorService;
             _logger = eventLog;
+            _apiServer = new ApiServer(appSettings,null);
         }
 
         public void Start()
@@ -110,66 +112,15 @@ namespace RTLSProvider.Rest
         {
             var path = c.Request.Url.AbsolutePath;
             if (path.StartsWith("/rtls/"))
-                ServeApi(c, path);
+                _apiServer.ServeApi(c,path);
             else
-                ServeFile(c, path);
+                SendError(c, 404, "Path Not found " + path);
         }
 
-        private void ServeApi(HttpListenerContext c, string path)
-        {
-            if (path.StartsWith("/rtls/config"))
-                ConfigCrud(c);
-            else if (path.StartsWith("/rtls/items"))
-                ServeFile(c, GetItems(c));
-            else if (path.StartsWith("/rtls/discard"))
-                ServeFile(c, DiscardItems(c));
-            else ServeFile(c, path);
-        }
 
-        private string DiscardItems(HttpListenerContext c)
-        {
-            if (c.Request.HttpMethod != HttpMethod.Post.Method) return "Bad Method. Use Post";
-            var payload = GetRequestPayload(c);
-            try
-            {
-                _inbox.Send(_system.Reporter(), new DiscardRequest()
-                {
-                    DiscardedTags = JsonConvert.DeserializeObject<List<string>>(payload)
-                });
-                _inbox.Receive(TimeSpan.FromSeconds(10));
-                return "Tags Discarded";
-            }
-            catch (TimeoutException)
-            {
-                return "Operation Timed out";
-            }
-        }
 
-        private string GetItems(HttpListenerContext c)
-        {
-            try
-            {
-                _inbox.Send(_system.Reporter(), new ReportRequest());
-                return (string) _inbox.Receive(TimeSpan.FromSeconds(10));
-            }
-            catch (TimeoutException)
-            {
-                return "Operation timed out";
-            }
-        }
 
-        private void ConfigCrud(HttpListenerContext c)
-        {
-            if (c.Request.HttpMethod == HttpMethod.Get.Method)
-                ServeFile(c, DumpConfiguration());
-            else if (c.Request.HttpMethod == HttpMethod.Post.Method)
-            {
-                var payload = JsonConvert.DeserializeObject<Dictionary<string, string>>(GetRequestPayload(c));
-                ServeFile(c, UpdateConfig(payload));
-            }
-        }
-
-        private string GetRequestPayload(HttpListenerContext c)
+        public static string GetRequestPayload(HttpListenerContext c)
         {
             if (c.Request.HasEntityBody)
                 using (var body = c.Request.InputStream)
@@ -180,48 +131,13 @@ namespace RTLSProvider.Rest
             return "";
         }
 
-        private string UpdateConfig(Dictionary<string, string> payload)
-        {
-            try
-            {
-                var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                var settings = config.AppSettings.Settings;
-                foreach (var key in payload.Keys)
-                    if (settings.AllKeys.Contains(key))
-                        settings[key].Value = HttpUtility.UrlDecode(payload[key]);
-                    else
-                        settings.Add(key, payload[key]);
-                foreach (var key in AppSettings.AllKeys)
-                {
-                    AppSettings[key] = settings[key].Value;
-                }
-                config.Save(ConfigurationSaveMode.Full);
-                return @"{""result"":""success""}";
-            }
-            catch (Exception e)
-            {
-                return @"{""result"":""" + e.Message + @"""}";
-            }
-        }
-
-
-        private string DumpConfiguration()
-        {
-            var conf = new Dictionary<string, string>();
-            foreach (var key in AppSettings.AllKeys)
-            {
-                conf.Add(key, AppSettings.Get(key));
-            }
-            return JsonConvert.SerializeObject(conf);
-        }
-
-        private void ServeFile(HttpListenerContext c, string path)
+        public static void SendResponse(HttpListenerContext c, string path)
         {
             SendResponse(c.Response, Encoding.UTF8.GetBytes(path));
         }
 
 
-        public void SendResponse(HttpListenerResponse response, byte[] buffer)
+        public static void SendResponse(HttpListenerResponse response, byte[] buffer)
         {
             response.AddHeader("Cache-Control", "no-cache");
             response.AddHeader("Pragma", "no-cache");
@@ -248,7 +164,14 @@ namespace RTLSProvider.Rest
         public void SetActorSystem(ConnectorActors actorSystem)
         {
             _system = actorSystem;
+            _apiServer.SetActorSystem(_system);
             _inbox = _system.CreateInbox();
+        }
+
+        public static void SendError(HttpListenerContext c, int status, string message)
+        {
+            c.Response.StatusCode = status;
+            SendResponse(c,message);
         }
     }
 }
