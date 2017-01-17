@@ -44,7 +44,7 @@ namespace RTLSProvider.Rest
 
         private void RegisterToQueue(HttpListenerContext c)
         {
-            HttpServer.SendResponse(c,@"{""serverUrl"":""http://localhost:5672/%2F"", ""queueId"":""locate""}");
+            HttpServer.SendResponse(c,@"{""serverUrl"":""amqp://localhost:5672/%2F"", ""queue"":""locate""}");
         }
 
         private void DiscardItems(HttpListenerContext c)

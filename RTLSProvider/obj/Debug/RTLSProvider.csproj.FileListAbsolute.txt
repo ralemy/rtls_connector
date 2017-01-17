@@ -16,3 +16,4 @@
 \\vmware-host\Shared Folders\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\bin\Debug\Akka.Serialization.Wire.xml
 \\vmware-host\Shared Folders\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\bin\Debug\Akka.Hocon.dll
 \\vmware-host\Shared Folders\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\obj\Debug\RTLSProvider.csproj.RTLSProvider.exe.config
+\\vmware-host\Shared Folders\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\obj\Debug\RTLSProvider.csprojResolveAssemblyReference.cache
