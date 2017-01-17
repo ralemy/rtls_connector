@@ -89,8 +89,8 @@ namespace RTLSProvider.ItemSense
         [JsonProperty("epc")]
         public string Epc { get; set; }
 
-        [JsonProperty("zone")]
-        public string Zone { get; set; }
+        [JsonProperty("area")]
+        public string Area { get; set; }
 
         [JsonProperty("timestamp")]
         public DateTime TimeStamp { get; set; }
@@ -102,7 +102,7 @@ namespace RTLSProvider.ItemSense
         public float Y { get; set; }
 
         [JsonIgnore] public string ItemSenseZone = "";
-        [JsonIgnore] private readonly Regex _regex = new Regex(@"(.+)_([.\d]+)_([.\d]+)$");
+        [JsonIgnore] private readonly Regex _regex = new Regex(@"(.+)_([-.\d]+)_([-.\d]+)$");
         [JsonIgnore] public static bool RtlsInvertY = true;
 
         public RtlsMessage()
@@ -124,7 +124,7 @@ namespace RTLSProvider.ItemSense
 
         private void ConvertFromLocationMessage(ITargetReportable message)
         {
-            Zone = message.Zone;
+            Area = message.Zone;
             X = float.Parse(message.X);
             Y = float.Parse(message.Y);
         }
@@ -134,13 +134,13 @@ namespace RTLSProvider.ItemSense
             var m = _regex.Match(message.Zone);
             if (m.Success)
             {
-                Zone = m.Groups[1].ToString();
+                Area = m.Groups[1].ToString();
                 X = float.Parse(m.Groups[2].ToString());
                 Y = float.Parse(m.Groups[3].ToString());
             }
             else
             {
-                Zone = message.Zone;
+                Area = message.Zone;
                 X = 0;
                 Y = 0;
             }

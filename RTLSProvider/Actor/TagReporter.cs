@@ -33,6 +33,7 @@ namespace RTLSProvider.Actor
                 });
             Receive<DiscardRequest>(message =>
             {
+                if (message == null || message.DiscardedTags == null) return;
                 message.DiscardedTags.ForEach(tag =>
                 {
                     if (_currentTags.ContainsKey(tag)) _currentTags.Remove(tag);
