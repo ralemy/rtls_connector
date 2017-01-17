@@ -36,8 +36,15 @@ namespace RTLSProvider.Rest
                 GetItems(c);
             else if (path.StartsWith("/rtls/discard"))
                 DiscardItems(c);
+            else if (path.StartsWith("/rtls/register"))
+                RegisterToQueue(c);
             else
                 HttpServer.SendError(c, 404, "Path Not found " + path);
+        }
+
+        private void RegisterToQueue(HttpListenerContext c)
+        {
+            HttpServer.SendResponse(c,@"{""serverUrl"":""http://localhost:5672/%2F"", ""queueId"":""locate""}");
         }
 
         private void DiscardItems(HttpListenerContext c)
