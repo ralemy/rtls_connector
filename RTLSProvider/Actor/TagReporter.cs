@@ -29,8 +29,7 @@ namespace RTLSProvider.Actor
             Receive<ReportRequest>(
                 message =>
                 {
-                    Sender.Tell(
-                        JsonConvert.SerializeObject(_currentTags.ToList().ConvertAll<RtlsMessage>(p => p.Value)), Self);
+                    Sender.Tell(FilterTags(message.Arguments), Self);
                 });
             Receive<DiscardRequest>(message =>
             {
@@ -41,6 +40,31 @@ namespace RTLSProvider.Actor
                 Sender.Tell("Tags Discarded", Self);
                 broker.Tell(message,ActorRefs.NoSender);
             });
+        }
+
+        private string FindArgument(IEnumerable<string> args, string arg)
+        {
+            try
+            {
+                return args.First(key => key.ToLower() == arg);
+            }
+            catch (InvalidOperationException)
+            {
+            }
+            catch (ArgumentNullException)
+            {
+            }
+            return null;
+        }
+
+        private List<RtlsMessage> FilterTags(NameValueCollection args)
+        {
+            var result = _currentTags.ToList().ConvertAll<RtlsMessage>(p => p.Value);
+            var key = FindArgument(args.AllKeys, "epcprefix");
+            if (key != null)
+                result.RemoveAll(msg => !msg.Epc.StartsWith(args[key]));
+//            key = FindArgument(args.AllKeys, "fromtime");
+            return result;
         }
 
         public static Props Props(IRabbitQueue outputQueue)

@@ -341,3 +341,11 @@ Affected parameters are:
 Removing EventLog source impinj_rtls_connector.
 Service impinj_rtls_connector is being removed from the system...
 Service impinj_rtls_connector was successfully removed from the system.
+Uninstalling assembly 'Z:\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\bin\Debug\RTLSProvider.exe'.
+Affected parameters are:
+   u = 
+   logfile = Z:\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\bin\Debug\RTLSProvider.InstallLog
+   assemblypath = Z:\Documents\Visual Studio 2015\Projects\RTLSProvider\RTLSProvider\bin\Debug\RTLSProvider.exe
+Removing EventLog source impinj_rtls_connector.
+Service impinj_rtls_connector is being removed from the system...
+Service impinj_rtls_connector was successfully removed from the system.

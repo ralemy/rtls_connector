@@ -119,7 +119,6 @@ namespace RTLSProvider.Rest
 
 
 
-
         public static string GetRequestPayload(HttpListenerContext c)
         {
             if (c.Request.HasEntityBody)
