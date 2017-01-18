@@ -128,8 +128,9 @@ namespace RTLSProvider
                         {
                             inst.Rollback(state);
                         }
-                        catch
+                        catch(Exception e)
                         {
+                            Console.WriteLine("Exception installing: " + e.Message);
                             // Swallow the rollback exception
                             // and let the real cause bubble up.
                         }

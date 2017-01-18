@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Configuration.Install;
 using System.Diagnostics;
 using System.Linq;
 using System.ServiceProcess;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace RTLSProvider
@@ -19,10 +16,10 @@ namespace RTLSProvider
 
         public ServiceInstaller()
         {
-            this.Description = "Connector Service to send RAIN RFID data from Impinj platfrorm to an AMQP broker";
-            this.DisplayName = "Impinj RTLS connector ";
-            this.ServiceName = "impinj_rtls_connector";
-            this.StartType = ServiceStartMode.Automatic;
+            Description = "Connector Service to send RAIN RFID data from Impinj platfrorm to an AMQP broker";
+            DisplayName = "Impinj RTLS connector ";
+            ServiceName = "impinj_rtls_connector";
+            StartType = ServiceStartMode.Automatic;
             InitializeComponent();
         }
 
@@ -108,21 +105,21 @@ namespace RTLSProvider
             return appConfigPath;
         }
 
-//        protected override void OnAfterInstall(IDictionary savedState)
-//        {
-//            base.OnAfterInstall(savedState);
-//            using (var sc = new ServiceController(this.ServiceName))
-//            {
-//                sc.Start();
-//            }
-//        }
+        protected override void OnAfterInstall(IDictionary savedState)
+        {
+            base.OnAfterInstall(savedState);
+            using (var sc = new ServiceController(ServiceName))
+            {
+                sc.Start();
+            }
+        }
     }
     [RunInstaller(true)]
     public sealed class ServiceProccessInstaller : ServiceProcessInstaller
     {
         public ServiceProccessInstaller()
         {
-            this.Account = ServiceAccount.LocalSystem;
+            Account = ServiceAccount.LocalSystem;
         }
 
     }

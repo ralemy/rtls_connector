@@ -10,18 +10,18 @@ namespace RTLSProvider.Actor
 {
     class ConnectorActors
     {
-        private IActorRef _logger;
         private readonly IActorRef _reporter;
         private readonly IActorRef _broker;
         private readonly ActorSystem _system;
-        private IRabbitQueue _mQueue;
-        private Inbox _inbox;
+        private readonly IRabbitQueue _mQueue;
+        private readonly Inbox _inbox;
 
-        public ConnectorActors(string systemName, NameValueCollection appSettings, EventLog eventLog, IRabbitQueue mQueue)
+        public ConnectorActors(string systemName, NameValueCollection appSettings, EventLog eventLog,
+            IRabbitQueue mQueue)
         {
             _mQueue = mQueue;
             _system = ActorSystem.Create(systemName);
-            _logger = _system.ActorOf(TagLogger.Props(eventLog), "Logger");
+            _system.ActorOf(TagLogger.Props(eventLog), "Logger");
             _reporter = _system.ActorOf(TagReporter.Props(mQueue), "TagReporter");
             _broker = _system.ActorOf(TagBroker.Props(appSettings), "TagBroker");
             _inbox = CreateInbox();
@@ -50,13 +50,13 @@ namespace RTLSProvider.Actor
 
         public List<RtlsMessage> ReportItems(ReportRequest r)
         {
-            _inbox.Send(_reporter,r);
+            _inbox.Send(_reporter, r);
             return (List<RtlsMessage>) _inbox.Receive(TimeSpan.FromSeconds(10));
         }
 
         public string DiscardTags(DiscardRequest discardRequest)
         {
-            _inbox.Send(_reporter,discardRequest);
+            _inbox.Send(_reporter, discardRequest);
             return (string) _inbox.Receive(TimeSpan.FromSeconds(10));
         }
     }

@@ -23,8 +23,9 @@ namespace RTLSProvider.Actor
             Receive<List<ImpinjItem>>(message => message.ForEach(m => processor(m)));
             Receive<DiscardRequest>(message => message.DiscardedTags.ForEach(tag =>
             {
-                if(_tagProcessors.ContainsKey(tag))
-                    _tagProcessors[tag].Tell(PoisonPill.Instance,ActorRefs.NoSender);
+                if (!_tagProcessors.ContainsKey(tag)) return;
+                _tagProcessors[tag].Tell(PoisonPill.Instance, ActorRefs.NoSender);
+                _tagProcessors.Remove(tag);
             }));
         }
 

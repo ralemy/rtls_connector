@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Configuration;
-using System.Data;
 using System.Diagnostics;
-using System.Linq;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
 using RTLSProvider.Actor;
 using RTLSProvider.Amqp;
 using RTLSProvider.ItemSense;
@@ -24,6 +19,7 @@ namespace RTLSProvider
         public static short ProcessError = 10;
         public static int HttpServerLogId = 100;
         private HttpServer _server;
+        private bool _running;
 
         public ConnectorService()
         {
@@ -57,7 +53,7 @@ namespace RTLSProvider
             _actorSystem = new ConnectorActors("ImpinjRTLS", appSettings, _eventLog, CreateOutputQueue(appSettings));
             _itemSense = new ItemSenseProxy(appSettings, new RabbitQueue());
             _itemSense.ConsumeQueue(new AmqpRegistrationParams(), _actorSystem.ProcessAmqp());
-            _server.SetActorSystem(_actorSystem);
+            _running = true;
         }
 
         private static IRabbitQueue CreateOutputQueue(NameValueCollection appSettings)
@@ -84,7 +80,23 @@ namespace RTLSProvider
            _eventLog.WriteEntry("Stopping Connector",EventLogEntryType.Information,1,1);
             _itemSense?.ReleaseQueue();
             _actorSystem?.Terminate();
-            _server?.Stop();
+            _server?.Dispose();
+            _running = false;
+        }
+
+        public string DiscardTags(DiscardRequest discardRequest)
+        {
+            return _actorSystem.DiscardTags(discardRequest);
+        }
+
+        public List<RtlsMessage> ReportItems(ReportRequest reportRequest)
+        {
+            return _actorSystem.ReportItems(reportRequest);
+        }
+
+        public bool Running()
+        {
+            return _running;
         }
     }
 }

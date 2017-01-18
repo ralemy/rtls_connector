@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
+using System.Diagnostics;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
-using RabbitMQ.Client;
 using RTLSProvider.Amqp;
 
 namespace RTLSProvider.ItemSense
@@ -100,9 +98,19 @@ namespace RTLSProvider.ItemSense
             _rabbitQueue.Initialize(_rabbitQueue.CreateFactory(factoryParams));
             _rabbitQueue.AddReceiver((model, e) =>
             {
-                var message = JsonConvert.DeserializeObject<AmqpMessage>(Encoding.UTF8.GetString(e.Body));
-                ReceivedMessages += 1;
-                reporter(message);
+                try
+                {
+                    var message =
+                        JsonConvert.DeserializeObject<AmqpMessage>
+                            (Encoding.UTF8.GetString(e.Body));
+                    ReceivedMessages += 1;
+                    reporter(message);
+
+                }
+                catch (Exception ex)
+                {
+                   EventLog.WriteEntry("Impinj RTLS","Error forwarding message to broker: "+ex.Message);                    
+                }
             });
             _rabbitQueue.Consume(queueParams.Queue);
         }

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
-using System.Text.RegularExpressions;
 using System.Threading;
 using Akka.Actor;
 using RTLSProvider.ItemSense;
@@ -12,28 +9,24 @@ namespace RTLSProvider.Actor
     {
         public static Props Props(string epc, int heartbeat)
         {
-            return Akka.Actor.Props.Create<TagProcessor>(epc, 2000, heartbeat);
+            return Akka.Actor.Props.Create<TagProcessor>( 2000, heartbeat);
         }
 
         private RtlsMessage _location = new RtlsMessage();
         private ITargetReportable _candidate;
         private readonly ActorSelection _tagReporter;
         private readonly Timer _t, _heartbeat;
-        private readonly string _epc;
         private string _state = "initial";
         private readonly int _amqpNoiseTimer;
         private readonly int _heartbeatTimer;
-        private readonly Regex _regex;
 
-        public TagProcessor(string epc, int amqpNoiseTimer, int heartbeatTimer)
+        public TagProcessor(int amqpNoiseTimer, int heartbeatTimer)
         {
-            _epc = epc;
             _amqpNoiseTimer = amqpNoiseTimer;
             _heartbeatTimer = heartbeatTimer;
             _t = new Timer(ReportDelay, null, Timeout.Infinite, Timeout.Infinite);
             _heartbeat = new Timer(HeartBeat, null, Timeout.Infinite, Timeout.Infinite);
             _tagReporter = Context.ActorSelection("/user/TagReporter");
-            _regex = new Regex(@"(.+)_([.\d]+)_([.\d]+)$");
             Receive<AmqpMessage>(message =>
             {
                 switch (_state)

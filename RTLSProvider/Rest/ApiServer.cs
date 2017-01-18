@@ -14,18 +14,13 @@ namespace RTLSProvider.Rest
     class ApiServer
     {
         private readonly NameValueCollection _appSettings;
-        private ConnectorActors _system;
+        private readonly ConnectorService _service;
 
 
-        public ApiServer(NameValueCollection appSettings, ConnectorActors system)
+        public ApiServer(NameValueCollection appSettings, ConnectorService service)
         {
             _appSettings = appSettings;
-            _system = system;
-        }
-
-        public void SetActorSystem(ConnectorActors system)
-        {
-            _system = system;
+            _service = service;
         }
 
         public void ServeApi(HttpListenerContext c, string path)
@@ -49,14 +44,14 @@ namespace RTLSProvider.Rest
 
         private void DiscardItems(HttpListenerContext c)
         {
-            if (_system == null)
+            if (!_service.Running())
                 HttpServer.SendError(c, 500, "Configuration not correct");
             else if (c.Request.HttpMethod != HttpMethod.Post.Method)
                 HttpServer.SendError(c, 400, "Bad Method. Use Post");
             else
                 try
                 {
-                    var response = _system.DiscardTags(new DiscardRequest()
+                    var response = _service.DiscardTags(new DiscardRequest()
                     {
                         DiscardedTags = JsonConvert.DeserializeObject<List<string>>
                             (HttpServer.GetRequestPayload(c))
@@ -72,11 +67,11 @@ namespace RTLSProvider.Rest
 
         private void GetItems(HttpListenerContext c)
         {
-            if (_system == null) HttpServer.SendError(c, 500, "Configuration not correct");
+            if (!_service.Running()) HttpServer.SendError(c, 500, "Configuration not correct");
             else
                 try
                 {
-                    var items = _system.ReportItems(new ReportRequest()
+                    var items = _service.ReportItems(new ReportRequest()
                     {
                         Arguments = c.Request.QueryString
                     });

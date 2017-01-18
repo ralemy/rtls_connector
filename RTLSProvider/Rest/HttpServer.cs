@@ -1,26 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Configuration;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Management.Instrumentation;
 using System.Net;
-using System.Net.Http;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
-using Akka.Actor;
-using Newtonsoft.Json;
-using RTLSProvider.Actor;
 
 namespace RTLSProvider.Rest
 {
     public class DisposableImpl : IDisposable
     {
-        private bool _disposed = false;
+        private bool _disposed;
 
         public void Dispose()
         {
@@ -48,7 +38,6 @@ namespace RTLSProvider.Rest
     class HttpServer : DisposableImpl
     {
         private readonly int _port;
-        private readonly ConnectorService _connectorService;
         private HttpListener _listener;
         private Thread _server;
         public NameValueCollection AppSettings;
@@ -56,9 +45,7 @@ namespace RTLSProvider.Rest
         public bool ConfigSaved;
 
         private readonly EventLog _logger;
-        private ConnectorActors _system;
-        private Inbox _inbox;
-        private ApiServer _apiServer;
+        private readonly ApiServer _apiServer;
 
         public HttpServer(NameValueCollection appSettings, ConnectorService connectorService, EventLog eventLog)
         {
@@ -66,9 +53,8 @@ namespace RTLSProvider.Rest
             FlashMessage = "";
             AppSettings = appSettings;
             _port = int.Parse(appSettings["ConfigurationPort"]);
-            _connectorService = connectorService;
             _logger = eventLog;
-            _apiServer = new ApiServer(appSettings,null);
+            _apiServer = new ApiServer(appSettings,connectorService);
         }
 
         public void Start()
@@ -146,25 +132,13 @@ namespace RTLSProvider.Rest
             output.Close();
         }
 
-        public void Stop()
+
+        protected override void FreeManagedResources()
         {
             _listener?.Stop();
             _server?.Abort();
             _listener = null;
             _server = null;
-        }
-
-        protected override void Dispose(bool v)
-        {
-            Stop();
-            base.Dispose(v);
-        }
-
-        public void SetActorSystem(ConnectorActors actorSystem)
-        {
-            _system = actorSystem;
-            _apiServer.SetActorSystem(_system);
-            _inbox = _system.CreateInbox();
         }
 
         public static void SendError(HttpListenerContext c, int status, string message)
